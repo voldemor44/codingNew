@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Decrytage</h1>
+    <script>
+        var m = prompt("Entrer le message crypté : ");
+        var numKey = prompt("Entrer le nombre de caractères de la clé de décryptage poly-alphabetique (ou mono-alphabetique au cas ou) : ")
+        var nKey = parseInt(numKey);
+        var k = prompt("Entrer la clé de " + nKey + " caractère(s)");
+        while (k.length != nKey) {
+            alert("La clé insérée ne contient pas le nombre de caractère que vous avez definis")
+            var k = prompt("Entrer de nouveau la clé de " + nKey + " caractère(s)");
+        }
+
+
+        //fonction de décryptage mono-alphabétique pour un seul caractère
+        var decrypt = (crypto, key) => {
+            var alpha = 'A';
+            var omega = 'Z';
+            var alpha2 = 'a';
+            var omega2 = 'z';
+            var mm = "";
+
+            if (crypto.charCodeAt() < 65 || crypto.charCodeAt() > 122 || (crypto.charCodeAt() > 90 & crypto.charCodeAt() < 97)) {
+                return crypto;
+            }
+
+            if (crypto.charCodeAt() >= 65 & crypto.charCodeAt() <= 90) {
+                key = key.toUpperCase();
+                var delta = (crypto.charCodeAt() - key.charCodeAt());
+                var letterClear = delta + alpha.charCodeAt();
+
+                if (letterClear >= 65) {
+                    return String.fromCharCode(letterClear);
+                } else {
+                    delta = (omega.charCodeAt() - key.charCodeAt() + 1);
+                    letterClear = crypto.charCodeAt() + delta;
+                    return String.fromCharCode(letterClear);
+                }
+            }
+
+            if (crypto.charCodeAt() >= 97 & crypto.charCodeAt() <= 122) {
+                key = key.toLowerCase();
+                var delta = (crypto.charCodeAt() - key.charCodeAt());
+                var letterClear = delta + alpha2.charCodeAt();
+
+                if (letterClear >= 97) {
+                    return String.fromCharCode(letterClear);
+                } else {
+                    delta = (omega2.charCodeAt() - key.charCodeAt() + 1);
+                    letterClear = crypto.charCodeAt() + delta;
+                    return String.fromCharCode(letterClear);
+                }
+            }
+
+
+        }
+
+
+        var kTab = k.split("")
+        var newM = "";
+        var count = 0;
+        for (var i = 0; i < m.length; i++) {
+            if (m[i].charCodeAt() < 65 || m[i].charCodeAt() > 122 || (m[i].charCodeAt() > 90 & m[i].charCodeAt() < 97)) {
+                newM = newM + m[i];
+            } else {
+                newM = newM + decrypt(m[i], kTab[count]);
+                count++;
+                if (count == nKey) { count = 0; }
+            }
+        }
+
+        alert("Le message clair (message originel) est : \n \n" + newM);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var c = prompt("Entrer le message crypté : ");
+        var k = prompt("Entrer la clé de décodage mono-alphabetique : ");
+
+        //fonction de décryptage mono-alphabétique
+        var decrypt = (crypto, key) => {
+            var alpha = 'A';
+            var omega = 'Z';
+            var alpha2 = 'a';
+            var omega2 = 'z';
+            var mm = "";
+            for (var i = 0; i < crypto.length; i++) {
+                if (crypto[i].charCodeAt() < 65 || crypto[i].charCodeAt() > 122 || (crypto[i].charCodeAt() > 90 & crypto[i].charCodeAt() < 97)) {
+                    mm = mm + crypto[i];
+                }
+
+                if (crypto[i].charCodeAt() >= 65 & crypto[i].charCodeAt() <= 90) {
+                    key = key.toUpperCase();
+                    var delta = (crypto[i].charCodeAt() - key.charCodeAt());
+                    var letterClear = delta + alpha.charCodeAt();
+
+                    if (letterClear >= 65) {
+                        mm = mm + String.fromCharCode(letterClear);
+                    } else {
+                        delta = (omega.charCodeAt() - key.charCodeAt() + 1);
+                        letterClear = crypto[i].charCodeAt() + delta;
+                        mm = mm + String.fromCharCode(letterClear);
+                    }
+                }
+
+                if (crypto[i].charCodeAt() >= 97 & crypto[i].charCodeAt() <= 122) {
+                    key = key.toLowerCase();
+                    var delta = (crypto[i].charCodeAt() - key.charCodeAt());
+                    var letterClear = delta + alpha2.charCodeAt();
+
+                    if (letterClear >= 97) {
+                        mm = mm + String.fromCharCode(letterClear);
+                    } else {
+                        delta = (omega2.charCodeAt() - key.charCodeAt() + 1);
+                        letterClear = crypto[i].charCodeAt() + delta;
+                        mm = mm + String.fromCharCode(letterClear);
+                    }
+                }
+
+            }
+            alert("Le message claire est : \n" + mm);
+
+        }
+
+        decrypt(c, k);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Crytage</h1>
+</body>
+<script>
+    var m = prompt("Entrer le message clair : ");
+    var numKey = prompt("Entrer le nombre de caractères de la clé de cryptage poly-alphabetique (ou mono-alphabetique au cas ou) : ")
+    var nKey = parseInt(numKey);
+    var k = prompt("Entrer la clé de " + nKey + " caractère(s)");
+    while (k.length != nKey) {
+        alert("La clé insérée ne contient pas le nombre de caractère que vous avez definis")
+        var k = prompt("Entrer de nouveau la clé de " + nKey + " caractère(s)");
+    }
+
+    var crypt = (message, key) => {
+        var alpha = 'A';
+        var omega = 'Z';
+        var alpha2 = 'a';
+        var omega2 = 'z';
+
+        if (message.charCodeAt() < 65 || message.charCodeAt() > 122 || (message.charCodeAt() > 90 & message.charCodeAt() < 97)) {
+            return message;
+        }
+
+        if (message.charCodeAt() >= 65 & message.charCodeAt() <= 90) {
+            key = key.toUpperCase();
+            var diff = (message.charCodeAt() - alpha.charCodeAt());
+            var codeCrypt = key.charCodeAt() + diff;
+
+            if (codeCrypt <= 90) {
+                return (String.fromCharCode(codeCrypt))
+            } else {
+                diff = (omega.charCodeAt() - message.charCodeAt() + 1);
+                codeCrypt = key.charCodeAt() - diff;
+                return (String.fromCharCode(codeCrypt))
+            }
+        }
+
+        if (message.charCodeAt() >= 97 & message.charCodeAt() <= 122) {
+            key = key.toLowerCase();
+            var diff = (message.charCodeAt() - alpha2.charCodeAt());
+            var codeCrypt = key.charCodeAt() + diff;
+
+            if (codeCrypt <= 122) {
+                return (String.fromCharCode(codeCrypt))
+            } else {
+                diff = (omega2.charCodeAt() - message.charCodeAt() + 1);
+                codeCrypt = key.charCodeAt() - diff;
+                return (String.fromCharCode(codeCrypt))
+            }
+
+        }
+
+    }
+
+
+
+
+
+    var kTab = k.split("")
+    var newCrypt = "";
+    var count = 0;
+    for (var i = 0; i < m.length; i++) {
+        if (m[i].charCodeAt() < 65 || m[i].charCodeAt() > 122 || (m[i].charCodeAt() > 90 & m[i].charCodeAt() < 97)) {
+            newCrypt = newCrypt + m[i];
+        } else {
+            newCrypt = newCrypt + crypt(m[i], kTab[count]);
+            count++;
+            if (count == nKey) { count = 0; }
+        }
+    }
+
+    alert("Le message crypté est : \n \n" + newCrypt);
+
+</script>
+
+</html>
